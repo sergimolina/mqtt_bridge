@@ -9,6 +9,22 @@ from .bridge import create_bridge
 from .mqtt_client import create_private_path_extractor
 from .util import lookup_object
 
+# trick from https://stackoverflow.com/questions/26130644/how-to-overcome-python-3-4-nameerror-name-basestring-is-not-defined to make basestring work in Py3
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
+
 class MqttBridgeNode:
 
     def __init__(self):

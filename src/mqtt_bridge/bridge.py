@@ -14,6 +14,23 @@ from uuid import uuid4
 
 from threading import Thread
 
+# trick from https://stackoverflow.com/questions/26130644/how-to-overcome-python-3-4-nameerror-name-basestring-is-not-defined to make basestring work in Py3
+try:
+    unicode = unicode
+except NameError:
+    # 'unicode' is undefined, must be Python 3
+    str = str
+    unicode = str
+    bytes = bytes
+    basestring = (str,bytes)
+else:
+    # 'unicode' exists, must be Python 2
+    str = str
+    unicode = unicode
+    bytes = str
+    basestring = basestring
+
+
 def create_bridge(factory, **kwargs):
     u""" bridge generator function
 
@@ -228,7 +245,7 @@ class MqttToRosBridge(Bridge):
         :param userdata: user defined data
         :param mqtt.MQTTMessage mqtt_msg: MQTT message
         """
-        rospy.logdebug("MQTT received from {}".format(mqtt_msg.topic))
+        rospy.loginfo("MQTT received from {}".format(mqtt_msg.topic))
         now = rospy.get_time()
 
         if self._interval is None or now - self._last_published >= self._interval:
@@ -246,7 +263,10 @@ class MqttToRosBridge(Bridge):
         :return rospy.Message: ROS Message
         """
         msg_dict = self._deserialize(mqtt_msg.payload)
-        return populate_instance(msg_dict, self._msg_type())
+        print('foo1 %s' % msg_dict)
+        p = populate_instance(msg_dict, self._msg_type())
+        print('foo %s' % p)
+        return p
 
 class SubscribeBridge(MqttToRosBridge):
 
