@@ -245,7 +245,7 @@ class MqttToRosBridge(Bridge):
         :param userdata: user defined data
         :param mqtt.MQTTMessage mqtt_msg: MQTT message
         """
-        rospy.loginfo("MQTT received from {}".format(mqtt_msg.topic))
+        rospy.logdebug("MQTT received from {}".format(mqtt_msg.topic))
         now = rospy.get_time()
 
         if self._interval is None or now - self._last_published >= self._interval:
@@ -263,10 +263,7 @@ class MqttToRosBridge(Bridge):
         :return rospy.Message: ROS Message
         """
         msg_dict = self._deserialize(mqtt_msg.payload)
-        print('foo1 %s' % msg_dict)
-        p = populate_instance(msg_dict, self._msg_type())
-        print('foo %s' % p)
-        return p
+        return populate_instance(msg_dict, self._msg_type())
 
 class SubscribeBridge(MqttToRosBridge):
 
