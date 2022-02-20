@@ -160,7 +160,7 @@ class RosToMqttBridge(Bridge):
         self._interval = 0 if frequency is None else 1.0 / frequency
         self._latched = latched
         self._qos = qos
-        if isinstance(msg_type, basestring):
+        if isinstance(msg_type, str):
             msg_type = lookup_object(msg_type)
         if not issubclass(msg_type, rospy.Message):
             raise TypeError(
@@ -177,7 +177,7 @@ class RosToMqttBridge(Bridge):
             self._last_published = now
 
     def _publish(self, msg):
-        payload = bytearray(self._serialize(extract_values(msg)))
+        payload = self._serialize(extract_values(msg))
         self._mqtt_client.publish(
             topic=self._topic_to, payload=payload,
             qos=self._qos, retain=self._latched)
@@ -199,7 +199,7 @@ class MqttToRosBridge(Bridge):
                  queue_size=10, latched=False, qos=0):
         self._topic_from = self._extract_private_path(topic_from)
         self._topic_to = topic_to
-        if isinstance(msg_type, basestring):
+        if isinstance(msg_type, str):
             msg_type = lookup_object(msg_type)
         if not issubclass(msg_type, rospy.Message):
             raise TypeError(

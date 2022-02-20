@@ -50,9 +50,9 @@ class MqttBridgeNode:
 
 
     def create_config(self, mqtt_client, serializer, deserializer, mqtt_private_path):
-        if isinstance(serializer, basestring):
+        if isinstance(serializer, str):
             serializer = lookup_object(serializer)
-        if isinstance(deserializer, basestring):
+        if isinstance(deserializer, str):
             deserializer = lookup_object(deserializer)
         private_path_extractor = create_private_path_extractor(mqtt_private_path)
         def config(binder):
