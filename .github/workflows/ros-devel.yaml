@@ -32,7 +32,7 @@ jobs:
       image: ${{ matrix.docker_image }}
     steps:
       - name: setup ROS environment
-        uses: LCAS/setup-ros@v0.2
+        uses: ros-tooling/setup-ros@v0.2
         with:
           required-ros-distributions: ${{ matrix.ros_distribution }}
       - name: build and test ROS 1
