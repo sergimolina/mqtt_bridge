@@ -2,9 +2,9 @@ name: ros build
 
 on:
   push:
-    branches: [ melodic-devel ]
+    branches: [ noetic-devel ]
   pull_request:
-    branches: [ melodic-devel ]
+    branches: [ noetic-devel ]
 
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         ros_distribution:
-          - melodic
+          - noetic
 
         # Define the Docker image(s) associated with each ROS distribution.
         # The include syntax allows additional variables to be defined, like
@@ -24,9 +24,8 @@ jobs:
         # https://ros.org/reps/rep-0003.html
         # https://ros.org/reps/rep-2000.html
         include:
-          # Melodic Morenia (May 2018 - May 2023)
-          - docker_image: ubuntu:bionic
-            ros_distribution: melodic
+          - docker_image: ubuntu:focal
+            ros_distribution: noetic
             ros_version: 1
 
     container:
