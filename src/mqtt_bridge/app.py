@@ -27,7 +27,7 @@ class MqttBridgeNode:
             "~mqtt_client_factory", ".mqtt_client:default_mqtt_client_factory")
         mqtt_client_factory = lookup_object(mqtt_client_factory_name)
         self.mqtt_client = mqtt_client_factory(self.mqtt_params)
-        self.mqtt_client.enable_logger()
+        #self.mqtt_client.enable_logger()
 
         # load serializer and deserializer
         serializer = params.get('serializer', 'json:dumps')
