@@ -2,8 +2,8 @@
 Changelog for package mqtt_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.4.3 (2022-08-01)
+------------------
 * Merge pull request `#18 <https://github.com/LCAS/mqtt_bridge/issues/18>`_ from LCAS/server_tweaks
   initial trials to set mosquitto server config
 * make the config file an argument (and fix some timing in test)
