@@ -43,12 +43,14 @@ class TestMqttBridge(unittest.TestCase):
         self.subscriber_echo = rospy.Subscriber("/echo", String, self.ros_callback_echo)
         self.subscriber_back = rospy.Subscriber("/back", String, self.ros_callback_back)
         self.subscriber_dynpub = rospy.Subscriber("/return", String, self.ros_callback_dynpub)
+        rospy.sleep(1)
 
     def tearDown(self):
         self.subscriber_ping.unregister()
         self.subscriber_pong.unregister()
         self.subscriber_echo.unregister()
         self.subscriber_back.unregister()
+        self.subscriber_dynpub.unregister()
         self.mqttc.loop_stop()
         self.mqttc.disconnect()
 

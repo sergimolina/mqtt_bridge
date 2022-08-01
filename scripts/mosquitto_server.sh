@@ -1,3 +1,4 @@
 #!/bin/bash
 
-mosquitto -p "$1"
+mosquitto -p "$1" -c "$2"
+

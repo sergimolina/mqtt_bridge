@@ -17,14 +17,15 @@ bridge:
     msg_type: std_msgs.msg:Bool
     topic_from: /ping
     topic_to: ping
+    frequency: 1
     latched: true
-    qos: 2
+    qos: 1
   - factory: mqtt_bridge.bridge:MqttToRosBridge
     msg_type: std_msgs.msg:Bool
     topic_from: ping
     topic_to: /pong
     latched: true
-    qos: 2
+    qos: 1
   # echo back
   - factory: mqtt_bridge.bridge:RosToMqttBridge
     msg_type: std_msgs.msg:String

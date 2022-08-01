@@ -1,8 +1,9 @@
 <launch>
   <arg name="use_tls" default="false" />
+  <arg name="mqtt_config" default="$(find mqtt_bridge)/config/mosquitto.conf" />
 
   <!-- the port of the coordination_server mqtt_bridge server -->
-  <node pkg="mqtt_bridge" name="mosquitto_server" type="mosquitto_server.sh" output="screen" args="8883"/>
+  <node pkg="mqtt_bridge" name="mosquitto_server" type="mosquitto_server.sh" output="screen" args="8883 $(arg mqtt_config)"/>
 
   <node name="mqtt_bridge" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen">
     <rosparam command="load" file="$(find mqtt_bridge)/config/demo_params.yaml" />
