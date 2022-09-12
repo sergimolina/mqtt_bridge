@@ -41,7 +41,7 @@ class MqttBridgeNode:
 
         # configure and connect to MQTT broker
         self.mqtt_client.on_connect = self._on_connect
-        self.mqtt_client.on_message = self._on_message
+        #self.mqtt_client.on_message = self._on_message
         self.mqtt_client.on_disconnect = self._on_disconnect
 
         # start MQTT loop
@@ -95,7 +95,7 @@ class MqttBridgeNode:
 
     def _on_message(self, client, userdata, mqtt_message):
         rospy.loginfo('MQTT message received: %s, %s, %s' %
-            client, userdata, mqtt_message
+            (client, userdata, mqtt_message)
         )
 
 __all__ = ['MqttBridgeNode']
