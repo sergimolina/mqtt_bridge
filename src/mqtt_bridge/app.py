@@ -8,6 +8,7 @@ import rospy
 from .bridge import create_bridge
 from .mqtt_client import create_private_path_extractor
 from .util import lookup_object
+import traceback
 
 class MqttBridgeNode:
 
@@ -40,7 +41,7 @@ class MqttBridgeNode:
 
         # configure and connect to MQTT broker
         self.mqtt_client.on_connect = self._on_connect
-        self.mqtt_client.on_message = self._on_message
+        #self.mqtt_client.on_message = self._on_message
         self.mqtt_client.on_disconnect = self._on_disconnect
 
         # start MQTT loop
@@ -74,6 +75,8 @@ class MqttBridgeNode:
                 self.mqtt_client.loop_forever()
             except Exception as e:
                 rospy.logwarn('MQTT loop received exception, retrying: %s' % e)
+                traceback.print_exc()
+
             rospy.sleep(1)
 
 
@@ -92,7 +95,7 @@ class MqttBridgeNode:
 
     def _on_message(self, client, userdata, mqtt_message):
         rospy.loginfo('MQTT message received: %s, %s, %s' %
-            client, userdata, mqtt_message
+            (client, userdata, mqtt_message)
         )
 
 __all__ = ['MqttBridgeNode']

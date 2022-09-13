@@ -5,9 +5,46 @@
   <!-- the port of the coordination_server mqtt_bridge server -->
   <node pkg="mqtt_bridge" name="mosquitto_server" type="mosquitto_server.sh" output="screen" args="8883 $(arg mqtt_config)"/>
 
-  <node name="mqtt_bridge" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen">
+  <node name="mqtt_bridge" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen" respawn="true">
     <rosparam command="delete" param="" />
     <rosparam command="load" file="$(find mqtt_bridge)/config/demo_params.yaml" />
     <rosparam if="$(arg use_tls)" command="load" ns="mqtt" file="$(find mqtt_bridge)/config/tls_params.yaml" />
+  </node>
+  <node name="mqtt_bridge_extra" pkg="mqtt_bridge" type="mqtt_bridge_node.py" output="screen" respawn="true">
+    <rosparam>
+mqtt:
+  client:
+    protocol: 4      # MQTTv311
+    client_id: client_extra
+    clean_session: False
+  connection:
+    host: localhost
+    port: 8883
+    keepalive: 5
+# Default is json serialiser, msgpack is more efficient
+serializer: msgpack:dumps
+deserializer: msgpack:loads
+bridge:
+
+# A SubscribeBridge interacts with the DynamicBridgeServer and publishes anything that
+# happens on the remote topic `topic_from` topic onto the local `topic_to` topic
+  - factory: mqtt_bridge.bridge:SubscribeBridge
+    control_topic: '__dynamic_server'
+    msg_type: std_msgs.msg:String
+    topic_from: /A/in
+    topic_to: /extra/A/out
+    latched: true
+    qos: 2
+# A PublishBridge interacts with the DynamicBridgeServer and publishes anything that
+# happens locally on the `topic_from` topic onto the `topic_to` topic at the remote end
+  - factory: mqtt_bridge.bridge:PublishBridge
+    control_topic: '__dynamic_server'
+    msg_type: std_msgs.msg:String
+    topic_from: /extra/publish
+    topic_to: /return
+    latched: true
+    qos: 2
+
+    </rosparam>
   </node>
 </launch>

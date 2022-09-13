@@ -118,9 +118,10 @@ class DynamicBridgeServer(Bridge):
 
         def __bridge_exists(args):
             for __bridge in self._bridges:
-                if __bridge._topic_from == args['topic_to'] and\
-                        __bridge._topic_to == args['topic_from']:
-                    return True
+                if hasattr(__bridge, '_topic_from') and hasattr(__bridge, '_topic_to'):
+                    if __bridge._topic_from == args['topic_from'] and\
+                            __bridge._topic_to == args['topic_to']:
+                        return True
             return False
 
         if msg_dict['op'] == 'mqtt2ros_subscribe':
