@@ -12,23 +12,13 @@ from uuid import uuid4
 
 from threading import Thread
 
-def create_bridge(factory: Union[str, "Bridge"], msg_type: Union[str, Type[rospy.Message]], topic_from: str,
-                  topic_to: str, frequency: Optional[float] = None, **kwargs) -> "Bridge":
+def create_bridge(factory: Union[str, "Bridge"], **kwargs) -> "Bridge":
     """ generate bridge instance using factory callable and arguments. if `factory` or `meg_type` is provided as string,
      this function will convert it to a corresponding object.
     """
     if isinstance(factory, str):
         factory = lookup_object(factory)
-    if not issubclass(factory, Bridge):
-        raise ValueError("factory should be Bridge subclass")
-    if isinstance(msg_type, str):
-        msg_type = lookup_object(msg_type)
-    if not issubclass(msg_type, rospy.Message):
-        raise TypeError(
-            "msg_type should be rospy.Message instance or its string"
-            "reprensentation")
-    return factory(
-        topic_from=topic_from, topic_to=topic_to, msg_type=msg_type, frequency=frequency, **kwargs)
+    return factory(**kwargs)
 
 
 class Bridge(object, metaclass=ABCMeta):
